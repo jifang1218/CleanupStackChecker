@@ -2,9 +2,6 @@
 #include "CheckCleanupStackConsumer.h"
 #include "helper/ErrorMgr.h"
 #include "clang/Tooling/Tooling.h"
-//#include "llvm/Support/CommandLine.h"
-//#include "clang/Tooling/CompilationDatabase.h"
-//#include "clang/Tooling/CommonOptionsParser.h"
 
 #include <memory>
 #include <fstream>
