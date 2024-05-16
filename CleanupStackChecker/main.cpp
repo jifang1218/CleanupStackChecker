@@ -8,6 +8,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <filesystem>
+#include <unistd.h>
 
 using namespace std;
 using namespace Fang;
@@ -15,7 +17,8 @@ using namespace Fang;
 int main(int argc, char *argv[])
 {
 	if (argc > 1) {
-        string filePath = argv[1];
+		string filePath = argv[1];
+
 		ifstream fs(filePath);
 		if (!fs.is_open()) {
 			cerr << "failed to load file: " << filePath << endl;
@@ -26,6 +29,9 @@ int main(int argc, char *argv[])
 		buffer << fs.rdbuf();
         fs.close();
 		string file_contents = buffer.str();
+		std::filesystem::path curDir = argv[1];
+		curDir = curDir.parent_path();
+		chdir(curDir.c_str());
        
 		clang::tooling::runToolOnCode(std::unique_ptr<CheckCleanupStackAction>(new CheckCleanupStackAction()), file_contents);
         
