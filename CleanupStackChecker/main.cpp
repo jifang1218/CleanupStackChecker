@@ -34,7 +34,9 @@ int main(int argc, char *argv[])
         
         ErrorMgr &errMgr = ErrorMgr::getInstance();
         errMgr.Output();
-	}
+    } else {
+        cerr << "Usage : CleanupStackChecker <filename>" << endl;
+    }
 
 	return 0;
 }

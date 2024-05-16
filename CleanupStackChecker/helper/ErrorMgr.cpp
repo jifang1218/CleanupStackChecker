@@ -18,8 +18,10 @@ std::mutex ErrorMgr::mutex;
 
 void ErrorMgr::Output() const {
     for (const auto &err : errors) {
-        cout << "At file: " + err.first.filePath
-        << ", line " << err.first.lineNum
+        cout
+        // << "At file: " + err.first.filePath
+        // << ", line " << err.first.lineNum
+        << "At line " << err.first.lineNum
         << + " " + err.first.sender
         << "::" + err.first.message + " : "
         << err.second

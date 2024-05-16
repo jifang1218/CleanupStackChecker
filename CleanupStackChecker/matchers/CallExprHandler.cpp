@@ -49,7 +49,7 @@ void CallExprHandler::run(const clang::ast_matchers::MatchFinder::MatchResult &R
         } break;
         case MethodType::LC_Method: {
             if (containsSender(info.sender)) {
-                errMgr.Add(info, "Duplicated " + info.sender + " on CleanupStack.");
+                errMgr.Add(info, "Duplicate " + info.sender + " on CleanupStack.");
             } else {
                 _senders.push_back(info.sender);
             }
@@ -63,7 +63,7 @@ void CallExprHandler::run(const clang::ast_matchers::MatchFinder::MatchResult &R
         } break;
         case MethodType::CleanupStack_Push: {
             if (containsSender(info.param)) {
-                errMgr.Add(info, "Duplicated " + info.param + " on CleanupStack.");
+                errMgr.Add(info, "Duplicate " + info.param + " on CleanupStack.");
             } else {
                 _senders.push_back(info.param);
             }
