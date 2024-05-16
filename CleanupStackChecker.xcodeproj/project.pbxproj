@@ -95,10 +95,10 @@
 		C0A944392BEC1C7700CF4EE2 /* CleanupStackChecker */ = {
 			isa = PBXGroup;
 			children = (
+				C0D838A52BF5B29C00BE34E8 /* visitors */,
 				C0D838892BF2BB2B00BE34E8 /* helper */,
 				C0D838852BF223BC00BE34E8 /* matchers */,
 				C0D838742BF18A4B00BE34E8 /* test */,
-				C0D838732BF0687000BE34E8 /* visitors */,
 				C0D790DF2BEDBA4E00D66BEB /* CleanupStackChecker.entitlements */,
 				C0D790D42BEDAF6D00D66BEB /* CheckCleanupStackAction.cpp */,
 				C0D790D92BEDAF6E00D66BEB /* CheckCleanupStackAction.h */,
@@ -107,13 +107,6 @@
 				C0D790D82BEDAF6E00D66BEB /* main.cpp */,
 			);
 			path = CleanupStackChecker;
-			sourceTree = "<group>";
-		};
-		C0D838732BF0687000BE34E8 /* visitors */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = visitors;
 			sourceTree = "<group>";
 		};
 		C0D838742BF18A4B00BE34E8 /* test */ = {
@@ -149,6 +142,13 @@
 				C0D8388F2BF5460B00BE34E8 /* ErrorMgr.h */,
 			);
 			path = helper;
+			sourceTree = "<group>";
+		};
+		C0D838A52BF5B29C00BE34E8 /* visitors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = visitors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
