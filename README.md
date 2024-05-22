@@ -116,4 +116,4 @@ These possible issues include:  
 
 **Usage:** 
 
-***CleanupStackChecker***   ***<filename>***
+***CleanupStackChecker***   ***filename***
