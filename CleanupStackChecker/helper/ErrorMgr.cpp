@@ -22,10 +22,15 @@ void ErrorMgr::Output() const {
         // << "At file: " + err.first.filePath
         // << ", line " << err.first.lineNum
         << "At line " << err.first.lineNum
-        << + " " + err.first.sender
-        << "::" + err.first.message + " : "
-        << err.second
-        << endl;
+        << + " " + err.first.sender;
+        if (err.first.IsInstanceMethod) {
+            cout << "->";
+        } else {
+            cout << "::";
+        }
+        cout << err.first.message + " : "
+            << err.second
+            << endl;
     }
 }
 

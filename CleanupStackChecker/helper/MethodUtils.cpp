@@ -23,10 +23,9 @@ list<string> MethodUtils::_senders;
 bool MethodUtils::IsCleanupStackMethod(const std::string &sender, const std::string &message) {
     bool ret = false;
     
-    ret = !isCleanupStackPush(sender, message)
-        && !isCleanupStackPop(sender, message)
-        && !isCleanupStackPush(sender, message)
-        && !isCleanupStackPopAndDestroy(sender, message);
+    ret = isCleanupStackPush(sender, message)
+        || isCleanupStackPop(sender, message)
+        || isCleanupStackPopAndDestroy(sender, message);
     
     return ret;
 }
@@ -143,6 +142,9 @@ MethodInfo MethodUtils::GetCallInfo(const clang::CallExpr *callExpr) {
         
         if (const NamedDecl *instanceNamedDecl = instanceDeclRef->getFoundDecl()) {
             ret.sender = instanceNamedDecl->getNameAsString();
+            
+            // also we need to mark it as instance method.
+            ret.IsInstanceMethod = true;
         }
     }
 

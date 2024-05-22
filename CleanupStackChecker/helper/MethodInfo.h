@@ -40,6 +40,8 @@ struct MethodInfo {
     
     MethodType type;
     
+    bool IsInstanceMethod = false;
+    
     bool IsValid() const {
         return (sender.length() > 0
                 && message.length() > 0
