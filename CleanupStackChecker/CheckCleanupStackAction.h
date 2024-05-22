@@ -9,10 +9,13 @@ namespace clang {
 
 namespace Fang {
 
+/**
+ the start point of Clang AST.
+ */
 class CheckCleanupStackAction : public clang::ASTFrontendAction {
 public:
     std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
-                                                          clang::CompilerInstance &CI, llvm::StringRef InFile) override;
+         clang::CompilerInstance &CI, llvm::StringRef InFile) override;
 };
 
 } // Fang

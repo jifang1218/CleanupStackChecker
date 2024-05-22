@@ -23,9 +23,10 @@ list<string> MethodUtils::_senders;
 bool MethodUtils::IsCleanupStackMethod(const std::string &sender, const std::string &message) {
     bool ret = false;
     
-    if (sender == "CleanupStack") {
-        ret = true;
-    }
+    ret = !isCleanupStackPush(sender, message)
+        && !isCleanupStackPop(sender, message)
+        && !isCleanupStackPush(sender, message)
+        && !isCleanupStackPopAndDestroy(sender, message);
     
     return ret;
 }
@@ -86,11 +87,9 @@ bool MethodUtils::isLCMethod(const std::string &sender, const std::string &messa
 bool MethodUtils::isSafeMethod(const std::string &sender, const std::string &message) {
     bool ret = false;
     
-    if (!MethodUtils::IsCleanupStackMethod(sender, message)
+    ret = !MethodUtils::IsCleanupStackMethod(sender, message)
         && !MethodUtils::isLCMethod(sender, message)
-        && !MethodUtils::isLMethod(sender, message)) {
-        ret = true;
-    }
+        && !MethodUtils::isLMethod(sender, message);
     
     return ret;
 }
@@ -102,9 +101,11 @@ MethodInfo MethodUtils::GetCallInfo(const clang::CallExpr *callExpr) {
         return ret;
     }
     
+    // CXXMethodDecl represents static/non-static methods.
     const CXXMethodDecl *methodDecl = llvm::dyn_cast<CXXMethodDecl>(callExpr->getCalleeDecl());
     ret.message = methodDecl->getNameAsString();
     
+    // get CXX class type.
     const CXXRecordDecl *recordDecl = llvm::dyn_cast<CXXRecordDecl>(methodDecl->getParent());
     ret.sender = recordDecl->getNameAsString();
     
@@ -114,6 +115,8 @@ MethodInfo MethodUtils::GetCallInfo(const clang::CallExpr *callExpr) {
     llvm::outs() << ret.message << "\n";
 #endif
     
+    // if the method has 1 or more parameters, we get the 1st parameter name
+    // Ex. CleanupStack::Push(pObj) ==> we get pObj.
     if (callExpr->getNumArgs() > 0) {
         const clang::Expr *argExpr = callExpr->getArg(0)->IgnoreParenCasts();
         if (const clang::DeclRefExpr *instanceDeclRef = llvm::dyn_cast<clang::DeclRefExpr>(argExpr)) {
@@ -133,6 +136,7 @@ MethodInfo MethodUtils::GetCallInfo(const clang::CallExpr *callExpr) {
     ret.filePath = SM.getFilename(startLoc);
     
     // it is a instance method, we need to replace classname with instance name.
+    // otherwise it is a static method of a class, we just keep the class name.
     if (const clang::CXXMemberCallExpr *memberCallExpr = llvm::dyn_cast<CXXMemberCallExpr>(callExpr)) {
         clang::Expr *instanceExpr = memberCallExpr->getImplicitObjectArgument()->IgnoreParenCasts();
         clang::DeclRefExpr *instanceDeclRef = llvm::dyn_cast<clang::DeclRefExpr>(instanceExpr);

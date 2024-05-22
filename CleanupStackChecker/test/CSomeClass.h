@@ -5,6 +5,10 @@
 
 namespace Fang {
 
+/**
+ a CBase derived class. Represents a regular C-class.
+ It provides a regular method and two leave methods. 
+ */
 class CSomeClass : public CBase {
 	public:
 		CSomeClass();

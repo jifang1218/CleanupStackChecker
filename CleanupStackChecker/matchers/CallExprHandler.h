@@ -17,8 +17,12 @@ namespace Fang {
 
 class ErrorMgr;
 
+/**
+ an AST match finder callback class. 
+ */
 class CallExprHandler : public clang::ast_matchers::MatchFinder::MatchCallback {
 public:
+    // the ID of the handler.
     static const char *kCallExprHandlerId;
     virtual void run(const clang::ast_matchers::MatchFinder::MatchResult &Result);
     
@@ -26,7 +30,7 @@ private:
     bool containsSender(const std::string &sender) const;
     
 private:
-    std::vector<std::string> _senders; // save senders/params.
+    std::vector<std::string> _senders; // class/instance names.
 };
 
 } // Fang

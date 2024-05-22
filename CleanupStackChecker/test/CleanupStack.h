@@ -7,6 +7,9 @@ namespace Fang {
 
 class CBase;
 
+/**
+ Simulate the Symbian's Exception handling component. 
+ */
 class CleanupStack {
 public:
     static void Push(CBase *pCObj);

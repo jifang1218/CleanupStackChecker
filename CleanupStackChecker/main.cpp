@@ -16,7 +16,7 @@ using namespace Fang;
 
 int main(int argc, char *argv[])
 {
-	if (argc > 1) {
+	if (argc > 1) { // read file content as a string. 
 		string filePath = argv[1];
 
 		ifstream fs(filePath);
@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 		buffer << fs.rdbuf();
         fs.close();
 		string file_contents = buffer.str();
+        
+        // change to the source dir.
 		std::filesystem::path curDir = argv[1];
 		curDir = curDir.parent_path();
 		chdir(curDir.c_str());

@@ -16,6 +16,9 @@
 
 namespace Fang {
 
+/**
+ a global instance to manage all issues. 
+ */
 class ErrorMgr {
 public:
     static ErrorMgr &getInstance() {

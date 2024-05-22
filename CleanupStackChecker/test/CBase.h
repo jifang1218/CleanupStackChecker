@@ -3,6 +3,9 @@
 
 namespace Fang {
 
+/**
+ Simulate a Symbian CBase class
+ */
 class CBase {
 	public:
 		CBase();
