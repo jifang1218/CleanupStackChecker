@@ -1,26 +1,30 @@
 cmake_minimum_required(VERSION 3.20)
-project(CleanupStackChecker)
 
-set(CLANG_ROOT "/usr/local/clang")
-set(CLANG_CFG_ROOT "${CLANG_ROOT}/lib/cmake")
+set(PROJ_NAME CleanupStackChecker)
+project(${PROJ_NAME} VERSION 0.1 LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# *.cpp, *.h
+file(GLOB_RECURSE SOURCES "*.cpp" "*.h")
+# exclude temporary files in CMakeFiles directory.
+list(FILTER SOURCES EXCLUDE REGEX "/CMakeFiles/")
+list(FILTER SOURCES EXCLUDE REGEX "/CleanupStackChecker\\/test/")
+
+set(CLANG_CFG_ROOT "/usr/local/clang/lib/cmake")
 
 # set module search path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CLANG_CFG_ROOT}/clang/;${CLANG_CFG_ROOT}/llvm/")
+list(APPEND CMAKE_PREFIX_PATH ${CLANG_CFG_ROOT}/clang ${CLANG_CFG_ROOT}/llvm)
+list(APPEND CMAKE_MODULE_PATH ${CLANG_CFG_ROOT}/clang ${CLANG_CFG_ROOT}/llvm)
 
 # include clang and llvm
 include(AddClang)
 include(AddLLVM)
 
-set(LLVM_DIR "${CLANG_CFG_ROOT}/llvm")
-
-
 # load llvm module
 find_package(LLVM REQUIRED CONFIG)
-#message("jifang===== ${LLVM_AVAILABLE_LIBS}")
-
-# -I and -L
-include_directories(${LLVM_INCLUDE_DIRS})
-link_directories(${LLVM_LIBRARY_DIRS})
+find_package(CLANG REQUIRED CONFIG)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     execute_process(
@@ -32,20 +36,26 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	add_compile_options(-fno-rtti -stdlib=libc++)
 endif()
 
-add_compile_options(-std=c++17)
 
 add_clang_executable(
-	CleanupStackChecker 
-	CleanupStackChecker/CheckCleanupStackAction.cpp 
-	CleanupStackChecker/CheckCleanupStackConsumer.cpp
-	CleanupStackChecker/main.cpp
-	CleanupStackChecker/helper/ErrorMgr.cpp 
-	CleanupStackChecker/helper/MethodUtils.cpp
-	CleanupStackChecker/matchers/CallExprHandler.cpp
+	${PROJ_NAME}
+	${SOURCES}
+)
+
+target_include_directories(${PROJ_NAME}
+	PRIVATE
+	${LLVM_INCLUDE_DIRS}
+	${CLANG_INCLUDE_DIRS}
+)
+
+target_link_directories(${PROJ_NAME} 
+	PRIVATE
+	${CLANG_LIBRARY_DIRS}
+	${LLVM_LIBRARY_DIRS}
 )
 
 # -l
-target_link_libraries(CleanupStackChecker 
+target_link_libraries(${PROJ_NAME}
   PRIVATE
   clangAST
   clangBasic
@@ -56,5 +66,4 @@ target_link_libraries(CleanupStackChecker
   clangASTMatchers
   LLVMFrontendOpenMP
 )
-
 
